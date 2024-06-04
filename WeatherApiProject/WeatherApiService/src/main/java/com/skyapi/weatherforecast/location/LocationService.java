@@ -2,11 +2,14 @@ package com.skyapi.weatherforecast.location;
 
 import java.util.List;
 
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import com.skyapi.weatherforecast.common.Location;
 
+
 @Service
+@Transactional
 public class LocationService {
 	
 	private LocationRepository repository;
@@ -41,6 +44,14 @@ public class LocationService {
 		locationInDB.setEnabled(locationInRequest.isEnabled());
 		
 		return repository.save(locationInDB);
+	}
+
+	public void delete(String code) throws LocationNotFoundException {
+		Location location = repository.findByCode(code);
+		if(location == null){
+			throw new LocationNotFoundException("No location found with the given code: "+ code);
+		}
+		repository.trashByCode(code);
 	}
 
 	
