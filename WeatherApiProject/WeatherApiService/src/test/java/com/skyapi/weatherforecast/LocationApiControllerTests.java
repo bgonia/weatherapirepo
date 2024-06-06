@@ -1,5 +1,6 @@
 package com.skyapi.weatherforecast;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.hamcrest.CoreMatchers.is;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -25,6 +26,7 @@ import com.skyapi.weatherforecast.common.Location;
 import com.skyapi.weatherforecast.location.LocationApiController;
 import com.skyapi.weatherforecast.location.LocationNotFoundException;
 import com.skyapi.weatherforecast.location.LocationService;
+import org.springframework.test.web.servlet.MvcResult;
 
 @WebMvcTest(LocationApiController.class)
 public class LocationApiControllerTests {
@@ -69,6 +71,69 @@ public class LocationApiControllerTests {
 			.andDo(print());
 		
 	}
+
+
+	@Test
+	public void testValidateRequestBodyLocationCodeLength() throws Exception {
+		Location location = new Location();
+		location.setCode("");
+		location.setCityName("New York City");
+		location.setRegionName("New York");
+		location.setCountryCode("US");
+		location.setCountryName("United states of America");
+		location.setEnabled(true);
+
+		String bodyContent = mapper.writeValueAsString(location);
+
+		mockMvc.perform(post(END_POINT_PATH).contentType(MediaType.APPLICATION_JSON).content(bodyContent))
+				.andExpect(status().isBadRequest())
+				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
+				.andExpect(jsonPath("$.errors[0]", is("Location code must have 3-12 characters")))
+				.andDo(print());
+	}
+
+	@Test
+	public void testValidateRequestBodyAllFieldsInvalid() throws Exception {
+		Location location = new Location();
+
+		String bodyContent = mapper.writeValueAsString(location);
+
+		MvcResult mvcResult = mockMvc.perform(post(END_POINT_PATH).contentType(MediaType.APPLICATION_JSON).content(bodyContent))
+				.andExpect(status().isBadRequest())
+				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
+				.andDo(print())
+				.andReturn();
+
+		String responseBody = mvcResult.getResponse().getContentAsString();
+		assertThat(responseBody).contains("Location code can not be null");
+		assertThat(responseBody).contains("City name can not be null");
+		assertThat(responseBody).contains("Region name must have 3-128 characters");
+		assertThat(responseBody).contains("Country code can not be null");
+		assertThat(responseBody).contains("Country name can not be null");
+
+
+	}
+
+	@Test
+	public void testValidateRequestBodyLocationCode() throws Exception {
+		Location location = new Location();
+		location.setCityName("New York City");
+		location.setRegionName("New York");
+		location.setCountryCode("US");
+		location.setCountryName("United states of America");
+		location.setEnabled(true);
+
+		String bodyContent = mapper.writeValueAsString(location);
+
+		mockMvc.perform(post(END_POINT_PATH).contentType(MediaType.APPLICATION_JSON).content(bodyContent))
+				.andExpect(status().isBadRequest())
+				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
+				.andExpect(jsonPath("$.errors[0]", is("Location code can not be null")))
+				.andDo(print());
+
+	}
+
+
 	
 	@Test
 	public void testListShouldReturn204NoContent() throws Exception {
