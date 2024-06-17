@@ -13,6 +13,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.util.Collections;
 import java.util.List;
 
+import com.skyapi.weatherforecast.common.Location;
+import com.skyapi.weatherforecast.location.LocationApiController;
+import com.skyapi.weatherforecast.location.LocationNotFoundException;
+import com.skyapi.weatherforecast.location.LocationService;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,10 +26,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.skyapi.weatherforecast.common.Location;
-import com.skyapi.weatherforecast.location.LocationApiController;
-import com.skyapi.weatherforecast.location.LocationNotFoundException;
-import com.skyapi.weatherforecast.location.LocationService;
 import org.springframework.test.web.servlet.MvcResult;
 
 @WebMvcTest(LocationApiController.class)
@@ -35,7 +35,8 @@ public class LocationApiControllerTests {
 	
 	@Autowired MockMvc mockMvc;
 	@Autowired ObjectMapper mapper;
-	@MockBean LocationService service;
+	@MockBean
+	LocationService service;
 	
 	@Test
 	public void testAddShouldReturn400BadRequest() throws Exception {

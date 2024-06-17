@@ -1,9 +1,8 @@
 package com.skyapi.weatherforecast.location;
 
+import com.skyapi.weatherforecast.common.Location;
 import org.springframework.web.bind.annotation.*;
 
-
-import com.skyapi.weatherforecast.common.Location;
 
 import jakarta.validation.Valid;
 

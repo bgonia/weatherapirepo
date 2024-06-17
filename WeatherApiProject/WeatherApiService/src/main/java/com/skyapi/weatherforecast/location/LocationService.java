@@ -2,10 +2,9 @@ package com.skyapi.weatherforecast.location;
 
 import java.util.List;
 
+import com.skyapi.weatherforecast.common.Location;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
-
-import com.skyapi.weatherforecast.common.Location;
 
 
 @Service
