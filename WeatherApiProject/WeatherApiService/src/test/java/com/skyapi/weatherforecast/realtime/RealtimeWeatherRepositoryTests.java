@@ -22,9 +22,7 @@ public class RealtimeWeatherRepositoryTests {
     @Test
     public void testUpdate() {
         String locationCode = "NYC_USA";
-
         RealtimeWeather realtimeWeather = realtimeWeatherRepository.findById(locationCode).get();
-
         realtimeWeather.setTemprature(-2);
         realtimeWeather.setHumidity(32);
         realtimeWeather.setPrecipitation(42);
@@ -33,10 +31,25 @@ public class RealtimeWeatherRepositoryTests {
         realtimeWeather.setLastUpdated(new Date());
 
         RealtimeWeather updatedRealtimeWather = realtimeWeatherRepository.save(realtimeWeather);
-
         assertThat(updatedRealtimeWather.getHumidity()).isEqualTo(32);
+    }
 
 
+    @Test
+    public void testFindByCountryCodeAndCityNameNotFound(){
+        String countryCode = "JP";
+        String cityName = "Tokyo";
+        RealtimeWeather realtimeWeather = realtimeWeatherRepository.findByCountryCodeAndCityName(countryCode, cityName);
+        assertThat(realtimeWeather).isNull();
+    }
+
+    @Test
+    public void testFindByCountryCodeAndCityNameFound(){
+        String countryCode = "US";
+        String cityName = "New York City";
+        RealtimeWeather realtimeWeather = realtimeWeatherRepository.findByCountryCodeAndCityName(countryCode, cityName);
+        assertThat(realtimeWeather).isNotNull();
+        assertThat(realtimeWeather.getLocation().getCityName()).isEqualTo(cityName);
     }
 
 }
