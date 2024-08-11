@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 
 public class CommonUtility {
 
-    private static Logger LOGGER = LoggerFactory.getLogger(CommonUtility.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CommonUtility.class);
 
     public static String getIPAddress(HttpServletRequest request) {
         String ip = request.getHeader("X-FORWARDED-FOR");
