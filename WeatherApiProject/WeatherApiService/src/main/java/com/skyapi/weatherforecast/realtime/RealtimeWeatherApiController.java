@@ -26,6 +26,7 @@ public class RealtimeWeatherApiController {
     private final RealtimeWeatherService realtimeWeatherService;
 
 
+    //It will give Realtime weather info based on client IP address
     @GetMapping
     public ResponseEntity<?> getRealtimeWeahterByIPAddress(HttpServletRequest request) {
         String ipAddress = CommonUtility.getIPAddress(request);
@@ -41,7 +42,7 @@ public class RealtimeWeatherApiController {
             LOGGER.error(e.getMessage(), e);
             return ResponseEntity.notFound().build();
         }
-        
+
     }
 
 }
