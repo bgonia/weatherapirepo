@@ -10,16 +10,19 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 
+
 @Service
 public class GeolocationService {
     private static final Logger LOGGER = LoggerFactory.getLogger(GeolocationService.class);
 
-    private String DBPath = "ip2locdb/IP2LOCATION-LITE-DB3.BIN";
+    private String DBPath = "D:\\weatherapirepo\\WeatherApiProject\\WeatherApiService\\ip2locdb\\IP2LOCATION-LITE-DB3.BIN";
+    //private String DBPath = "ip2locdb/IP2LOCATION-LITE-DB3.BIN";
     private IP2Location ipLocator = new IP2Location();
 
 
     public GeolocationService() {
         try {
+            System.out.println(DBPath);
             ipLocator.Open(DBPath);
         } catch (IOException ex){
             LOGGER.error(ex.getMessage(), ex);

@@ -92,7 +92,7 @@ public class LocationRepositoryTests {
 			location.setRealtimeWeather(realtimeWeather);
 		}
 
-		realtimeWeather.setTemprature(-1);
+		realtimeWeather.setTemperature(-1);
 		realtimeWeather.setHumidity(30);
 		realtimeWeather.setPrecipitation(40);
 		realtimeWeather.setStatus("Snowy");

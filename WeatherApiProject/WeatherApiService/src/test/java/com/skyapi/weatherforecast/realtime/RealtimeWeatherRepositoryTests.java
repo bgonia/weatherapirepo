@@ -23,7 +23,7 @@ public class RealtimeWeatherRepositoryTests {
     public void testUpdate() {
         String locationCode = "NYC_USA";
         RealtimeWeather realtimeWeather = realtimeWeatherRepository.findById(locationCode).get();
-        realtimeWeather.setTemprature(-2);
+        realtimeWeather.setTemperature(-2);
         realtimeWeather.setHumidity(32);
         realtimeWeather.setPrecipitation(42);
         realtimeWeather.setStatus("Snowy");
@@ -50,6 +50,28 @@ public class RealtimeWeatherRepositoryTests {
         RealtimeWeather realtimeWeather = realtimeWeatherRepository.findByCountryCodeAndCityName(countryCode, cityName);
         assertThat(realtimeWeather).isNotNull();
         assertThat(realtimeWeather.getLocation().getCityName()).isEqualTo(cityName);
+    }
+
+    @Test
+    public void testFindByLocationCodeNotFound(){
+        String locationCode = "LACA_USA";
+        RealtimeWeather realtimeWeather = realtimeWeatherRepository.findByLocationCode(locationCode);
+        assertThat(realtimeWeather).isNull();
+    }
+
+    @Test
+    public void testFindByTrashedLocationCodeNotFound(){
+        String locationCode = "NYC_USA";
+        RealtimeWeather realtimeWeather = realtimeWeatherRepository.findByLocationCode(locationCode);
+        assertThat(realtimeWeather).isNull();
+    }
+
+    @Test
+    public void testFindByLocationCodeFound(){
+        String locationCode = "DELHI_IN";
+        RealtimeWeather realtimeWeather = realtimeWeatherRepository.findByLocationCode(locationCode);
+        assertThat(realtimeWeather).isNotNull();
+        assertThat(realtimeWeather.getLocationCode()).isEqualTo(locationCode);
     }
 
 }
