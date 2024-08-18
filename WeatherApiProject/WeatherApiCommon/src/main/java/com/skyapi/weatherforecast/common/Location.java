@@ -1,6 +1,6 @@
 package com.skyapi.weatherforecast.common;
 
-import java.util.Objects;
+
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -8,10 +8,17 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
+import java.util.ArrayList;
+import java.util.List;
+
+@Data
 @Entity
 @Table(name = "locations")
+@RequiredArgsConstructor
 public class Location {
 
     @Id
@@ -53,9 +60,8 @@ public class Location {
     @JsonIgnore
     private RealtimeWeather realtimeWeather;
 
-
-    public Location() {
-    }
+    @OneToMany(mappedBy = "id.location", cascade = CascadeType.ALL)
+    private List<HourlyWeather> listHourlyWeather = new ArrayList<>();
 
     public Location(String cityName, String regionName, String countryName, String countryCode) {
         this.cityName = cityName;
@@ -64,90 +70,14 @@ public class Location {
         this.countryCode = countryCode;
     }
 
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public String getCityName() {
-        return cityName;
-    }
-
-    public void setCityName(String cityName) {
-        this.cityName = cityName;
-    }
-
-    public String getRegionName() {
-        return regionName;
-    }
-
-    public void setRegionName(String regionName) {
-        this.regionName = regionName;
-    }
-
-    public String getCountryName() {
-        return countryName;
-    }
-
-    public void setCountryName(String countryName) {
-        this.countryName = countryName;
-    }
-
-    public String getCountryCode() {
-        return countryCode;
-    }
-
-    public void setCountryCode(String countryCode) {
-        this.countryCode = countryCode;
-    }
-
-    public boolean isEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
-    }
-
-    public boolean isTrashed() {
-        return trashed;
-    }
-
-    public void setTrashed(boolean trashed) {
-        this.trashed = trashed;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(code);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        Location other = (Location) obj;
-        return Objects.equals(code, other.code);
-    }
-
     @Override
     public String toString() {
         return cityName + ", " + (regionName != null ? regionName + ", " : "") + countryName;
     }
 
-
-    public RealtimeWeather getRealtimeWeather() {
-        return realtimeWeather;
+    public Location code(String code) {
+        setCode(code);
+        return this;
     }
 
-    public void setRealtimeWeather(RealtimeWeather realtimeWeather) {
-        this.realtimeWeather = realtimeWeather;
-    }
 }

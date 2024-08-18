@@ -1,4 +1,4 @@
-package com.skyapi.weatherforecast;
+package com.skyapi.weatherforecast.location;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -6,8 +6,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.Date;
 import java.util.List;
 
+import com.skyapi.weatherforecast.common.HourlyWeather;
+import com.skyapi.weatherforecast.common.HourlyWeatherId;
 import com.skyapi.weatherforecast.common.Location;
-import com.skyapi.weatherforecast.location.LocationRepository;
 import com.skyapi.weatherforecast.common.RealtimeWeather;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,20 +24,22 @@ public class LocationRepositoryTests {
 	
 	@Autowired
 	private LocationRepository repository;
-	
+    @Autowired
+    private LocationRepository locationRepository;
+
 	@Test
 	public void testAddSuccess() {
 		Location location = new Location();
-		location.setCode("NYC_USA");
-		location.setCityName("New York City");
-		location.setRegionName("New York");
-		location.setCountryCode("US");
-		location.setCountryName("United states of America");
+		location.setCode("MBMH_IN");
+		location.setCityName("Mumbai");
+		location.setRegionName("Maharashtra");
+		location.setCountryCode("IN");
+		location.setCountryName("INDIA");
 		location.setEnabled(true);
 		
 		Location savedLocation =  repository.save(location);
 		assertThat(savedLocation).isNotNull();
-		assertThat(savedLocation.getCode()).isEqualTo("NYC_USA");
+		assertThat(savedLocation.getCode()).isEqualTo("MBMH_IN");
 	}
 	
 	
@@ -106,8 +109,59 @@ public class LocationRepositoryTests {
 
 	}
 
-	
-	
-	
+
+	@Test
+	public void testAddHourlyWeatherData(){
+		Location location = locationRepository.findById("DELHI_IN").get();
+
+		List<HourlyWeather> listHourlyWeather = location.getListHourlyWeather();
+
+        new HourlyWeather();
+        HourlyWeather forecast1 = HourlyWeather.of()
+				.id(new HourlyWeatherId(10, location))
+				.temperature(15)
+				.precipitation(40)
+				.status("Sunny")
+				.build();
+
+		HourlyWeather forecast2 = new HourlyWeather()
+				.location(location)
+				.hourOfDay(11)
+				.temperature(16)
+				.precipitation(50)
+				.status("Cloudy");
+
+		listHourlyWeather.add(forecast1);
+		listHourlyWeather.add(forecast2);
+
+		Location updatedLocation = repository.save(location);
+
+		assertThat(updatedLocation.getListHourlyWeather()).isNotEmpty();
+
+	}
+
+	@Test
+	public void testFindByCountryCodeAndCityNameNotFound(){
+		String countryCode = "NYC_USA";
+		String cityName = "New York City";
+
+		Location location = locationRepository.findByCountryCodeAndCityName(countryCode, cityName);
+		assertThat(location).isNull();
+	}
+
+	@Test
+	public void testFindByCountryCodeAndCityNameFound(){
+		String countryCode = "IN";
+		String cityName = "Delhi";
+
+		Location location = locationRepository.findByCountryCodeAndCityName(countryCode, cityName);
+		assertThat(location.getCountryCode()).isEqualTo(countryCode);
+		assertThat(location.getCityName()).isEqualTo(cityName);
+	}
+
+
+
+
+
 
 }
