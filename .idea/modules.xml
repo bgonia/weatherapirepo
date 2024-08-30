@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/WeatherApiRepo.iml" filepath="$PROJECT_DIR$/.idea/WeatherApiRepo.iml" />
       <module fileurl="file://$PROJECT_DIR$/WeatherApiProject/WeatherApiService/WeatherApiService.iml" filepath="$PROJECT_DIR$/WeatherApiProject/WeatherApiService/WeatherApiService.iml" />
+      <module fileurl="file://$PROJECT_DIR$/WeatherApiProject/WeatherApiCommon/weather-api-common.iml" filepath="$PROJECT_DIR$/WeatherApiProject/WeatherApiCommon/weather-api-common.iml" />
     </modules>
   </component>
 </project>

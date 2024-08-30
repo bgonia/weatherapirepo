@@ -1,15 +1,15 @@
-package com.skyapi.weatherforecast;
+package com.skyapi.weatherforecast.hourly;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import com.skyapi.weatherforecast.common.HourlyWeather;
 import com.skyapi.weatherforecast.common.HourlyWeatherId;
 import com.skyapi.weatherforecast.common.Location;
-import com.skyapi.weatherforecast.hourly.HourlyWeatherRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.annotation.Rollback;
+
 
 import java.util.List;
 import java.util.Optional;
@@ -61,6 +61,14 @@ public class HourlyWeatherRepositoryTests {
         int currenHour = 10;
         List<HourlyWeather> hourlyForecast = hourlyWeatherRepository.findByLocationCode(locationCode, currenHour);
         assertThat(hourlyForecast).isNotEmpty();
+    }
+
+    @Test
+    public void testFindByLocationCodeNotFound(){
+        String locationCode = "DELHI_IN";
+        int currenHour = 15;
+        List<HourlyWeather> hourlyForecast = hourlyWeatherRepository.findByLocationCode(locationCode, currenHour);
+        assertThat(hourlyForecast).isEmpty();
     }
 
 

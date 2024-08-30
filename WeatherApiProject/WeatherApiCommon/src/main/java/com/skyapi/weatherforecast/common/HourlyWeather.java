@@ -3,10 +3,12 @@ package com.skyapi.weatherforecast.common;
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.*;
 
 @Data
-@Entity(name = "weather_hourly")
+@Entity
+@Table(name = "weather_hourly")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(builderMethodName = "of")

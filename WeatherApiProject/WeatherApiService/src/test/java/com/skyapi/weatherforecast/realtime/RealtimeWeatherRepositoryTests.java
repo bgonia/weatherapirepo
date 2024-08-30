@@ -74,4 +74,5 @@ public class RealtimeWeatherRepositoryTests {
         assertThat(realtimeWeather.getLocationCode()).isEqualTo(locationCode);
     }
 
+
 }
